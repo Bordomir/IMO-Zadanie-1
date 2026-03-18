@@ -6,6 +6,7 @@
 #include <ranges>
 #include <string_view>
 #include <charconv>
+#include <cmath>
 #include <print>
 
 using namespace std;
@@ -46,8 +47,25 @@ DataLoader::DataLoader(const string &filename)
                     return val; 
                 }) 
                 | ranges::to<vector<int>>();
-            println("{}", res);
             return res;
         }) 
         | ranges::to<vector<vector<int>>>();
+
+    nodeProfits = parsedData
+        | views::transform([](const vector<int> &row){ return row[2]; }) 
+        | ranges::to<vector<int>>();
+
+    // obliczanie odległości euklidesowej
+    distanceMatrix = vector<vector<int>>(parsedData.size(), vector<int>(parsedData.size()));
+    for (size_t i = 0; i < parsedData.size(); i++)
+    {
+        for (size_t j = i; j < parsedData.size(); j++)
+        {
+            double dx = parsedData[i][0] - parsedData[j][0];
+            double dy = parsedData[i][1] - parsedData[j][1];
+            int dist = static_cast<int>(hypot(dx, dy) + 0.5);
+            distanceMatrix[i][j] = dist;
+            distanceMatrix[j][i] = dist;
+        }
+    }
 }

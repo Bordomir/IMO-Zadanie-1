@@ -1,6 +1,6 @@
 #include "include/DataLoader.hpp"
 
-int main(int argc, char *argv[])
+int main()
 {
     DataLoader data("../data/TSPA.csv");
 

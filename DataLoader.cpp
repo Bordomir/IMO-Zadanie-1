@@ -7,7 +7,6 @@
 #include <string_view>
 #include <charconv>
 #include <cmath>
-#include <print>
 
 using namespace std;
 
@@ -50,6 +49,8 @@ DataLoader::DataLoader(const string &filename)
             return res;
         }) 
         | ranges::to<vector<vector<int>>>();
+
+    numNodes = parsedData.size();
 
     nodeProfits = parsedData
         | views::transform([](const vector<int> &row){ return row[2]; }) 

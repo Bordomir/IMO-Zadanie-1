@@ -2,7 +2,8 @@
 
 int main()
 {
-    DataLoader data("../data/TSPA.csv");
+    DataLoader dataA("../data/TSPA.csv");
+    DataLoader dataB("../data/TSPB.csv");
 
     return 0;
 }

@@ -10,10 +10,10 @@ class RandomSolver : public Solver
 public:
     std::mt19937 rng;
 
-    RandomSolver(DataLoader &data, unsigned int seed) : Solver(data), rng(seed) {};
     RandomSolver(DataLoader &data) : Solver(data), rng(std::random_device{}()) {};
+    RandomSolver(DataLoader &data, unsigned int seed) : Solver(data), rng(seed) {};
     void solve() override;
 
 private:
-    int randomInt(int min, int max);
+    inline int randomInt(int min, int max);
 };

@@ -17,21 +17,27 @@ void RandomSolver::solve()
     int numChosenNodes = randomInt(1, data.numNodes);
 
     // tworzenie wektora wszystkich wierzchołków
-    solution = views::iota(0, data.numNodes) | ranges::to<vector<int>>();
+    auto allNodesView = views::iota(0, data.numNodes);
+
+    // losowanie numChosenNodes wierzchołków
+    solution.clear();
+    solution.reserve(numChosenNodes);
+    sample(allNodesView.begin(), allNodesView.end(), back_inserter(solution), numChosenNodes, rng);
 
     // losowanie kolejności wierzchołków
     shuffle(solution.begin(), solution.end(), rng);
 
-    // wybieranie pierwszych numChosenNodes wierzchołków
-    solution.resize(numChosenNodes);
-
     // wyliczanie wyniku rozwiązania
-    solutionScore = data.nodeProfits[solution[0]];
-    size_t currentNode = 0;
-    for (currentNode = 1; currentNode < solution.size(); currentNode++)
-    {
-        solutionScore -= data.distanceMatrix[solution[currentNode - 1]][solution[currentNode]];
-        solutionScore += data.nodeProfits[solution[currentNode]];
-    }
-    solutionScore -= data.distanceMatrix[solution[currentNode - 1]][solution[0]];
+    // sumowanie profitów z odwiedzonych wierzchołków
+    solutionScore = ranges::fold_left(
+        solution | views::transform([&](int node) { return data.nodeProfits[node]; }),
+        0, plus<int>()
+    );
+    // odejmowanie odległości między kolejnymi wierzchołkami w rozwiązaniu
+    solutionScore -= ranges::fold_left(
+        solution | views::adjacent_transform<2>([&](int a, int b) { return data.distanceMatrix[a][b]; }),
+        0, plus<int>()
+    );
+    // odejmowanie odległości między ostatnim a pierwszym wierzchołkiem (powrót do startu)
+    solutionScore -= data.distanceMatrix[solution.back()][solution.front()];
 }

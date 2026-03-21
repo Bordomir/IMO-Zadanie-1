@@ -6,6 +6,7 @@
 #include "include/Solver.hpp"
 #include "include/RandomSolver.hpp"
 #include "include/GreedySolver.hpp"
+#include "include/KRegret.hpp"
 
 int main()
 {
@@ -20,6 +21,8 @@ int main()
     solvers.emplace_back(make_unique<GreedySolver>(dataA, startNode, GreedyType::NearestNeighbour, false));
     solvers.emplace_back(make_unique<GreedySolver>(dataA, startNode, GreedyType::GreedyCycle));
     solvers.emplace_back(make_unique<GreedySolver>(dataA, startNode, GreedyType::GreedyCycle, false));
+    solvers.emplace_back(make_unique<KRegret>(dataA, startNode, 2));
+    solvers.emplace_back(make_unique<KRegret>(dataA, startNode, 2, -0.2));
 
     for(auto &solver : solvers)
     {

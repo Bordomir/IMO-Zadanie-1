@@ -11,6 +11,8 @@ public:
     vector<int> solution;
     int solutionScore;
 
-    Solver(DataLoader &data) : data(data) {};
+    Solver(DataLoader &data) : data(data), solution(), solutionScore(0) {};
     virtual void solve() = 0;
+    void calculateScore();
+    void print();
 };

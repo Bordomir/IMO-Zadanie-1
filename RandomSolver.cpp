@@ -6,7 +6,7 @@
 
 using namespace std;
 
-inline int RandomSolver::randomInt(int min, int max)
+int RandomSolver::randomInt(int min, int max)
 {
     return rng() % (max - min + 1) + min;
 }
@@ -28,12 +28,5 @@ void RandomSolver::solve()
     shuffle(solution.begin(), solution.end(), rng);
 
     // wyliczanie wyniku rozwiązania
-    solutionScore = data.nodeProfits[solution[0]];
-    int currentNode = 0;
-    for (currentNode = 1; currentNode < numChosenNodes; currentNode++)
-    {
-        solutionScore -= data.distanceMatrix[solution[currentNode - 1]][solution[currentNode]];
-        solutionScore += data.nodeProfits[solution[currentNode]];
-    }
-    solutionScore -= data.distanceMatrix[solution[currentNode - 1]][solution[0]];
+    calculateScore();
 }

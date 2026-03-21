@@ -22,7 +22,7 @@ DataLoader::DataLoader(const string &filename)
     // pobranie rozmiaru pliku z systemu
     auto size = filesystem::file_size(filename); 
     
-    // wczytanie całego pliku do stringa
+    // wczytanie całego pliku do zmiennej
     string data(size, '\0');
     file.read(data.data(), size);
 
@@ -39,9 +39,9 @@ DataLoader::DataLoader(const string &filename)
                 | views::transform([](auto &&part){ return string_view(part); }) 
                 | views::transform([](string_view part)
                 {
-                    // parsowanie string_view na int
+                    // parsowanie tekstu na liczbę
                     int val = 0;
-                    // from_chars zignoruje nie usunięte wcześniej możliwie występujące znaki \r na końcu
+                    // from_chars zignoruje nie usunięte wcześniej znaki \r na końcu
                     from_chars(part.data(), part.data() + part.size(), val);
                     return val; 
                 }) 

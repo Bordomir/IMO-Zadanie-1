@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.22)
 
-add_compile_options(-Wall -Wextra -Wpedantic)
+add_compile_options(-Wall -Wextra -Wpedantic -O3)
 
 project ("Modified travelling salesman problem")
 

@@ -6,6 +6,11 @@
 
 using namespace std;
 
+string RandomSolver::getAlgorithmName()
+{
+    return "Random";
+}
+
 int RandomSolver::randomInt(int min, int max)
 {
     return rng() % (max - min + 1) + min;
@@ -14,10 +19,10 @@ int RandomSolver::randomInt(int min, int max)
 void RandomSolver::solve()
 {
     // losowanie liczby wybranych wierzchołków
-    int numChosenNodes = randomInt(1, data.numNodes);
+    int numChosenNodes = randomInt(1, data->numNodes);
 
     // tworzenie widoku wszystkich wierzchołków
-    auto allNodesView = views::iota(0, data.numNodes);
+    auto allNodesView = views::iota(0, data->numNodes);
 
     // losowanie numChosenNodes wierzchołków
     solution.clear();

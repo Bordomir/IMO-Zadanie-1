@@ -1,5 +1,6 @@
 #include "include/GreedySolver.hpp"
 
+#include <format>
 #include <vector>
 #include <numeric>
 #include <limits>
@@ -7,15 +8,32 @@
 
 using namespace std;
 
+string GreedySolver::getAlgorithmName()
+{
+    string typeName;
+    switch (type)
+    {
+    case GreedyType::NearestNeighbour:
+        typeName = "NN";
+        break;
+    
+    case GreedyType::GreedyCycle:
+        typeName = "GC";
+        break;
+    }
+    string isConsideringProfitsName = isConsideringProfits ? "withProfits" : "noProfits";
+    return format("Greedy_{}_{}", typeName, isConsideringProfitsName);
+}
 void GreedySolver::solve()
+
 {
     // ustawienie aktualnego rozwiązania na zawierający jedynie startowy wierzchołek
     solution.clear();
-    solution.reserve(data.numNodes);
+    solution.reserve(data->numNodes);
     solution.push_back(startNode);
 
     // utworzenie tablicy nieodwiedzonych wierzchołków
-    unvisitedNodes = vector<int>(data.numNodes);
+    unvisitedNodes = vector<int>(data->numNodes);
     iota(unvisitedNodes.begin(), unvisitedNodes.end(), 0);
     swapAndPop(startNode);
 
@@ -62,13 +80,13 @@ void GreedySolver::solvePhaseII()
             int next = solution[i == n - 1 ? 0 : i + 1];
             // wyliczenie poprawy po usunęciu wierzchołka
             // + odległość prev -> curr
-            int improvement = data.distanceMatrix[prev][curr];
+            int improvement = data->distanceMatrix[prev][curr];
             // - odległość prev -> next
-            improvement -= data.distanceMatrix[prev][next];
+            improvement -= data->distanceMatrix[prev][next];
             // + odległość curr -> next
-            improvement += data.distanceMatrix[curr][next];
+            improvement += data->distanceMatrix[curr][next];
             // - zysk z odwiedzenia wierzchołka
-            improvement -= data.nodeProfits[curr];
+            improvement -= data->nodeProfits[curr];
             if (improvement > bestImprovement)
             {
                 bestImprovement = improvement;

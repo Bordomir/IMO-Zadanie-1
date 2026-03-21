@@ -27,6 +27,7 @@ public:
         isConsideringProfits(isConsideringProfits) {};
     GreedySolver(DataLoader &data, GreedyType type = GreedyType::NearestNeighbour, bool isConsideringProfits = true) : 
         GreedySolver(data, random_device()() % data.numNodes, type, isConsideringProfits) {};
+    string getAlgorithmName() override;
     void solve() override;
 
 private:
@@ -48,7 +49,7 @@ private:
 template <typename ScoreFunction>
 int GreedySolver::findNeareastNode(int node, ScoreFunction scoreFunction)
 {
-    const auto &distancesFromNode = data.distanceMatrix[node];
+    const auto &distancesFromNode = data->distanceMatrix[node];
 
     int bestScore = numeric_limits<int>::min();
     int bestI = -1;
@@ -74,7 +75,7 @@ void GreedySolver::solvePhaseI(SolveFunction solveFunction)
     // wybór odpowiedniej funkcji oceny
     if (isConsideringProfits)
         solveFunction([&](int node, const auto &dists)
-            { return data.nodeProfits[node] - dists[node]; });
+            { return data->nodeProfits[node] - dists[node]; });
     else
         solveFunction([&](int node, const auto &dists)
             { return -dists[node]; });
@@ -111,7 +112,7 @@ void GreedySolver::solveGC(ScoreFunction scoreFunction)
         // iterujemy po wszystkich nieodwiedzonych wierzchołkach
         for (size_t i = 0; i < unvisitedNodes.size(); i++)
         {
-            const auto &distancesFromPreviousNode = data.distanceMatrix[solution[0]];
+            const auto &distancesFromPreviousNode = data->distanceMatrix[solution[0]];
             const int newNode = unvisitedNodes[i];
 
             // przypadek 0 -> nowy -> N - 1
@@ -120,7 +121,7 @@ void GreedySolver::solveGC(ScoreFunction scoreFunction)
             // + odległość 0 -> N - 1
             score += distancesFromPreviousNode[solution[n - 1]];
             // - odległość nowy -> N - 1
-            score -= data.distanceMatrix[newNode][solution[n - 1]];
+            score -= data->distanceMatrix[newNode][solution[n - 1]];
             if (score > bestScore)
             {
                 bestScore = score;
@@ -130,14 +131,14 @@ void GreedySolver::solveGC(ScoreFunction scoreFunction)
             // przypadki j -> nowy -> j - 1 dla 0 < j < N
             for (int j = 1; j < n; j++)
             {
-                const auto &distancesFromPreviousNode = data.distanceMatrix[solution[j]];
+                const auto &distancesFromPreviousNode = data->distanceMatrix[solution[j]];
 
                 // (wartość z dodania wierzchołka) - odległość j -> nowy
                 int score = scoreFunction(newNode, distancesFromPreviousNode);
                 // + odległość j -> j - 1
                 score += distancesFromPreviousNode[solution[j - 1]];
                 // - odległość nowy -> j - 1
-                score -= data.distanceMatrix[newNode][solution[j - 1]];
+                score -= data->distanceMatrix[newNode][solution[j - 1]];
                 if (score > bestScore)
                 {
                     bestScore = score;

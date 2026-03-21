@@ -12,6 +12,7 @@ public:
 
     RandomSolver(DataLoader &data) : Solver(data), rng(std::random_device{}()) {};
     RandomSolver(DataLoader &data, unsigned int seed) : Solver(data), rng(seed) {};
+    string getAlgorithmName() override;
     void solve() override;
 
 private:

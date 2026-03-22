@@ -27,7 +27,6 @@ string GreedySolver::getAlgorithmName()
     return format("Greedy_{}_{}", typeName, isConsideringProfitsName);
 }
 void GreedySolver::solve()
-
 {
     // ustawienie aktualnego rozwiązania na zawierający jedynie startowy wierzchołek
     solution.clear();
@@ -52,11 +51,13 @@ void GreedySolver::solve()
         break;
     }
 
+    solutionScoreAfterIPhaseI = calculateLength();
+
     // wykonanie fazy II
     solvePhaseII();
 
     // wyliczanie wyniku rozwiązania
-    calculateScore();
+    solutionScore = calculateScore();
 }
 
 // usuwa wierzchołek o podanym indeksie z tablicy nieodwiedzonych wierzchołków

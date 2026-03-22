@@ -14,7 +14,7 @@ public:
     void solve() override;
 
 private:
-    int startNode_;
+    // int startNode_;
     int k_;
     std::optional<double> weight_;
 

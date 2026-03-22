@@ -16,13 +16,11 @@ enum class GreedyType
 class GreedySolver : public Solver
 {
 public:
-    int startNode;
     GreedyType type;
     bool isConsideringProfits;
 
     GreedySolver(DataLoader &data, int startNode, GreedyType type = GreedyType::NearestNeighbour, bool isConsideringProfits = true) : 
-        Solver(data),
-        startNode(startNode),
+        Solver(data, startNode),
         type(type),
         isConsideringProfits(isConsideringProfits) {};
     GreedySolver(DataLoader &data, GreedyType type = GreedyType::NearestNeighbour, bool isConsideringProfits = true) : 

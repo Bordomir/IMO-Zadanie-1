@@ -13,7 +13,8 @@ string RandomSolver::getAlgorithmName()
 
 int RandomSolver::randomInt(int min, int max)
 {
-    return rng() % (max - min + 1) + min;
+    uniform_int_distribution<int> dist(min, max);
+    return dist(rng);
 }
 
 void RandomSolver::solve()
@@ -27,11 +28,12 @@ void RandomSolver::solve()
     // losowanie numChosenNodes wierzchołków
     solution.clear();
     solution.resize(numChosenNodes);
-    sample(allNodesView.begin(), allNodesView.end(), solution.begin(), numChosenNodes, rng);
+    ranges::sample(allNodesView, solution.begin(), numChosenNodes, rng);
 
     // losowanie kolejności wierzchołków
     shuffle(solution.begin(), solution.end(), rng);
 
     // wyliczanie wyniku rozwiązania
-    calculateScore();
+    solutionScoreAfterIPhaseI = calculateLength();
+    solutionScore = calculateScore();
 }

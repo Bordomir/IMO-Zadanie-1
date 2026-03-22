@@ -19,8 +19,7 @@ struct Insertion
 }
 
 KRegret::KRegret(DataLoader& data, int startNode, int k, std::optional<double> weight)
-    : Solver(data)
-    , startNode_(startNode)
+    : Solver(data, startNode)
     , k_(k)
     , weight_(weight)
 {
@@ -43,9 +42,12 @@ void KRegret::solve()
     solution.clear();
 
     solvePhaseI();
+
+    solutionScoreAfterIPhaseI = calculateLength();
+
     solvePhaseII();
 
-    calculateScore();
+    solutionScore = calculateScore();
 }
 
 void KRegret::solvePhaseI()
@@ -53,8 +55,8 @@ void KRegret::solvePhaseI()
     solution.reserve(data->numNodes);
     std::vector<bool> visited(data->numNodes, false);
 
-    solution.push_back(startNode_);
-    visited[startNode_] = true;
+    solution.push_back(startNode);
+    visited[startNode] = true;
 
     for (int i = solution.size(); i < data->numNodes; ++i)
     {

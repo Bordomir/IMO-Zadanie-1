@@ -10,8 +10,8 @@ class RandomSolver : public Solver
 public:
     std::mt19937 rng;
 
-    RandomSolver(DataLoader &data) : Solver(data), rng(std::random_device{}()) {};
-    RandomSolver(DataLoader &data, unsigned int seed) : Solver(data), rng(seed) {};
+    RandomSolver(DataLoader &data) : Solver(data, 0), rng(std::random_device{}()) {};
+    RandomSolver(DataLoader &data, unsigned int seed) : Solver(data, 0), rng(seed) {};
     string getAlgorithmName() override;
     void solve() override;
 
